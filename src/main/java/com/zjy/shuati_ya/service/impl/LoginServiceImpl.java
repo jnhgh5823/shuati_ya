@@ -6,6 +6,7 @@ import com.zjy.shuati_ya.pojo.entity.*;
 import com.zjy.shuati_ya.pojo.vo.LoginVO;
 import com.zjy.shuati_ya.service.LoginService;
 import com.zjy.shuati_ya.util.jwtUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class LoginServiceImpl implements LoginService {
 
@@ -41,7 +43,9 @@ public class LoginServiceImpl implements LoginService {
             map.put("id",user.getId());
             map.put("name",user.getName());
             map.put("role",user.getRole());
-            user.setToken(jwtUtils.generateToken(map));
+            String token = jwtUtils.generateToken(map);
+            log.info("token:{}",token);
+            user.setToken(token);
             BeanUtils.copyProperties(user,loginVO);
             return loginVO;
         }
